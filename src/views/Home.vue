@@ -1,18 +1,111 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <el-container class="container">
+        <el-header class="header-wrapper">
+          <div class="header">
+            <bm-search-input />
+          </div>
+        </el-header>
+      <el-main class="main">
+        <bm-porcelain-item v-for="(porcelainItem, index) in porcelainList"
+                        :key="index"
+                        :dataItem = porcelainItem
+                        ></bm-porcelain-item>
+      </el-main>
+    </el-container>
+    <el-backtop target=".home .container"></el-backtop>
   </div>
 </template>
 
-<script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import { Action } from 'vuex-class'
+import bmPorcelainItem from '../components/bm-porcelainItem.vue'
+import bmSearchInput from '../components/bm-searchInput.vue'
+import { Porcelain, getPorcelainList } from '../datatype/porcelainType'
+import { loginVM, getToken } from '../request/api'
+ @Component({
+   components: {
+     bmPorcelainItem,
+     bmSearchInput
+   }
+ })
+export default class Home extends Vue {
+  @Action('setToken') setToken: any;
+  // 搜索框相关数据
+ searchInput:String = '';
+ select:String = '';
+ // 瓷器列表
+ porcelainList:Array<Porcelain> = [{
+   id: '',
+   originPhoto: '',
+   type: '',
+   museum: '',
+   feature: '' }];
+ // loginVM参数
+loginVMParam: loginVM = {
+  password: 'admin',
+  rememberMe: true,
+  username: 'admin'
+};
 
-export default {
-  name: 'home',
-  components: {
-    HelloWorld
-  }
+mounted () {
+  console.log('loginVMParam', this.loginVMParam)
+  // 获取token
+  getToken(this.loginVMParam).then((res: any) => {
+    console.log('token:::', res)
+    // 将token存入vuex
+    const token = res.id_token
+    this.setToken(token)
+    localStorage.setItem('token', token)
+  })
+    .then(() => {
+      getPorcelainList()
+    })
+  // 获取全部瓷器列表
+  getPorcelainList().then((res: any) => {
+    console.log('porcelainList:::', res)
+  })
+}
 }
 </script>
+
+<style lang="less">
+html, body{
+  margin: 0;
+  padding: 0;
+}
+.home {
+  margin: 0 auto;
+  .header-wrapper {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 0;
+    //  .header {
+    //   border-bottom: 1px solid #dcdfe6;
+    //   height: 80px;
+    //   line-height: 80px;
+    //   background: white;
+    //   position: relative;
+    //   .input-with-select {
+    //     width: 90%;
+    //     left: 5%;
+    //     right: 5%;
+    //   }
+    // }
+  }
+  .main {
+    width: 95%;
+    margin:  100px auto;
+  }
+}
+ .el-select .el-input {
+    width: 130px;
+  }
+  .input-with-select .el-input-group__prepend {
+    background-color: #fff;
+  }
+</style>
