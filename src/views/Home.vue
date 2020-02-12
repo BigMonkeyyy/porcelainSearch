@@ -7,8 +7,8 @@
           </div>
         </el-header>
       <el-main class="main">
-        <bm-porcelain-item v-for="(porcelainItem, index) in porcelainList"
-                        :key="index"
+        <bm-porcelain-item v-for="porcelainItem in porcelainList"
+                        :key="porcelainItem.id"
                         :dataItem = porcelainItem
                         ></bm-porcelain-item>
       </el-main>
@@ -37,11 +37,12 @@ export default class Home extends Vue {
  select:String = '';
  // 瓷器列表
  porcelainList:Array<Porcelain> = [{
-   id: '',
-   originPhoto: '',
+   id: 0,
+   imageUrl: '',
+   historicalPeriod: '',
    type: '',
    museum: '',
-   feature: '' }];
+   featureUrl: '' }];
  // loginVM参数
 loginVMParam: loginVM = {
   password: 'admin',
@@ -50,7 +51,6 @@ loginVMParam: loginVM = {
 };
 
 mounted () {
-  console.log('loginVMParam', this.loginVMParam)
   // 获取token
   getToken(this.loginVMParam).then((res: any) => {
     console.log('token:::', res)
@@ -58,14 +58,13 @@ mounted () {
     const token = res.id_token
     this.setToken(token)
     localStorage.setItem('token', token)
+    // 获取所有瓷器列表
+    return getPorcelainList()
   })
-    .then(() => {
-      getPorcelainList()
+    .then((res: any) => {
+      console.log('porcelainList:::', res)
+      this.porcelainList = res
     })
-  // 获取全部瓷器列表
-  getPorcelainList().then((res: any) => {
-    console.log('porcelainList:::', res)
-  })
 }
 }
 </script>
