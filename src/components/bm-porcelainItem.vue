@@ -6,23 +6,31 @@
           <el-image
             style="width: 140%;"
             :src="dataItem.imageUrl"
-            :preview-src-list="[dataItem.imageUrl]">
+            :preview-src-list="[dataItem.imageUrl]"
+            lazy>
+            <div slot="placeholder" class="image-slot">
+              加载中<span class="dot">...</span>
+            </div>
           </el-image>
           <el-image
             style="width: 140%; height: 140%; margin-top: -40%; margin-left: 60%;"
             :src="dataItem.featureUrl"
-            :preview-src-list="[dataItem.featureUrl]">
+            :preview-src-list="[dataItem.featureUrl]"
+            lazy>
+            <div slot="placeholder" class="image-slot" style="color: #999">
+              加载中<span class="dot">...</span>
+            </div>
           </el-image>
         </el-col>
         <el-col :span="18">
           <div class="info-wrapper">
-            <section class="info-item">朝代 <div class="content">{{dataItem.historicalPeriod || '未知'}}</div></section>
-            <section class="info-item">类型 <div class="content">{{dataItem.type}}</div></section>
-            <section class="info-item">所在博物馆 <div class="content">{{dataItem.museum}}</div></section>
-            <section class="info-item">备注<br>
+            <section class="info-item"><b>朝代</b> <span class="content">{{dataItem.historicalPeriod == 'None' ? '未知' : dataItem.historicalPeriod}}</span></section>
+            <section class="info-item"><b>类型</b> <span class="content">{{dataItem.type}}</span></section>
+            <section class="info-item"><b>所在博物馆</b> <span class="content">{{dataItem.museum}}</span></section>
+            <section class="info-item"><b>备注</b><br>
               <div style="margin-top:1rem;">
                 <div class="content noteList" v-for="note in dataItem.ids" :key="note.id">
-                  {{note.key}}:{{note.val}}
+                  <span class="key">{{note.key}}:</span>{{note.val}}
                 </div>
               </div>
             </section>
@@ -35,7 +43,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator'
-import { Porcelain } from '../datatype/porcelainType'
+import { Porcelain } from '../models/porcelainModel'
 @Component
 export default class PorcelainItem extends Vue {
   @Prop() dataItem!: Porcelain;
@@ -48,11 +56,14 @@ export default class PorcelainItem extends Vue {
   .info-wrapper {
     padding-left: 18%;
     .info-item {
-      margin-bottom: 20px;
+      margin-bottom: 12px;
       .content {
-        margin-left: 2rem;
-        margin-top: 1rem;
+        margin-left: 1rem;
+        margin-top: .8rem;
         color: #999;
+        .key {
+          color: #666;
+        }
       }
       pre{
         font-family: "Hiragino Sans GB","Microsoft YaHei",Arial,sans-serif;

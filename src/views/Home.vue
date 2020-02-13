@@ -1,4 +1,5 @@
 <template>
+<div class="home-wrapper">
   <div class="home">
     <el-container class="container">
         <el-header class="header-wrapper">
@@ -6,15 +7,16 @@
             <bm-search-input />
           </div>
         </el-header>
-      <el-main class="main">
+      <el-main class="main" v-infinite-scroll="load" style="overflow:auto">
         <bm-porcelain-item v-for="porcelainItem in porcelainList"
                         :key="porcelainItem.id"
                         :dataItem = porcelainItem
                         ></bm-porcelain-item>
       </el-main>
     </el-container>
-    <el-backtop target=".home .container"></el-backtop>
   </div>
+  <el-backtop target=".home .container"></el-backtop>
+</div>
 </template>
 
 <script lang="ts">
@@ -32,6 +34,7 @@ import { loginVM, API } from '../request/api'
  })
 export default class Home extends Vue {
   @Action('setToken') setToken: any;
+  count: number = 0;
   // 搜索框相关数据
  searchInput:String = '';
  select:String = '';
@@ -50,6 +53,10 @@ loginVMParam: loginVM = {
   username: 'admin'
 };
 
+load () {
+  this.count += 2
+}
+
 mounted () {
   const api = new API()
   const porcelainModel = new PorcelainModel()
@@ -61,12 +68,10 @@ mounted () {
     this.setToken(token)
     localStorage.setItem('token', token)
     // 获取所有瓷器列表
-    return porcelainModel.getPorcelainList()
-  })
-    .then((res: any) => {
-      console.log('porcelainList:::', res)
+    porcelainModel.getPorcelainList((res: any) => {
       this.porcelainList = res
     })
+  })
 }
 }
 </script>

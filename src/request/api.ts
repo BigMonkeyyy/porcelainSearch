@@ -4,31 +4,41 @@ import { HTTP } from './http'
  */
 interface loginVM {
   password: string;
-  rememberMe: boolean;
+  rememberMe?: boolean;
   username: string;
 }
 
 class API extends HTTP {
   /**
-   * 获取token
-   * @param {string} params
+   *获取token
+   *
+   * @param {object} params
+   * @returns
+   * @memberof API
    */
   public getToken (params: object) {
     return this.post('api/authenticate', params)
   }
 
   /**
-   * 获取所有瓷器信息
-   */
-  public getAllPorcelains = () => {
+  *获取所有瓷器信息
+  *
+  * @returns
+  * @memberof API
+  */
+  public getAllPorcelains () {
     return this.get('api/porcelains')
   }
 
   /**
-   * 获取所有瓷器备注note
-   */
-  public getAllNotes = () => {
-    return this.get('api/notes')
+  *获取某个瓷器信息
+  *
+  * @param {number} id
+  * @returns
+  * @memberof API
+  */
+  public getPorcelain (id: number) {
+    return this.get(`api/porcelains/${id}`)
   }
 }
 

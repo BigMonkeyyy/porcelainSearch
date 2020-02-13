@@ -34,6 +34,7 @@ service.interceptors.response.use(
     return response.status === 200 ? Promise.resolve(response) : Promise.reject(response)
   },
   (err:any) => {
+    console.log(err)
     let errMsg = ''
     if (err && err.response.status) {
       switch (err.response.status) {
