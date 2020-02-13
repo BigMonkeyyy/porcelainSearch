@@ -1,5 +1,6 @@
 <template>
 <div class="home-wrapper">
+  <el-backtop></el-backtop>
   <div class="home">
     <el-container class="container">
         <el-header class="header-wrapper">
@@ -7,15 +8,16 @@
             <bm-search-input />
           </div>
         </el-header>
-      <el-main class="main" v-infinite-scroll="load" style="overflow:auto">
-        <bm-porcelain-item v-for="porcelainItem in porcelainList"
+      <el-main class="main infinite-list" v-infinite-scroll="load" style="overflow:auto">
+        <bm-porcelain-item class="infinite-list-item"
+                        v-for="porcelainItem in porcelainList"
                         :key="porcelainItem.id"
-                        :dataItem = porcelainItem
+                        :dataItem=porcelainItem
+                        scroll-container=".main"
                         ></bm-porcelain-item>
       </el-main>
     </el-container>
   </div>
-  <el-backtop target=".home .container"></el-backtop>
 </div>
 </template>
 
@@ -90,22 +92,11 @@ html, body{
     left: 0;
     z-index: 1000;
     padding: 0;
-    //  .header {
-    //   border-bottom: 1px solid #dcdfe6;
-    //   height: 80px;
-    //   line-height: 80px;
-    //   background: white;
-    //   position: relative;
-    //   .input-with-select {
-    //     width: 90%;
-    //     left: 5%;
-    //     right: 5%;
-    //   }
-    // }
   }
   .main {
     width: 95%;
     margin:  100px auto;
+    overflow: scroll;
   }
 }
  .el-select .el-input {

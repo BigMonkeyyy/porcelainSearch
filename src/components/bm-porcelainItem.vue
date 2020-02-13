@@ -8,7 +8,7 @@
             :src="dataItem.imageUrl"
             :preview-src-list="[dataItem.imageUrl]"
             lazy>
-            <div slot="placeholder" class="image-slot">
+            <div slot="placeholder" class="image-slot" style="color: #999">
               加载中<span class="dot">...</span>
             </div>
           </el-image>
