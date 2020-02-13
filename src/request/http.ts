@@ -77,40 +77,41 @@ service.interceptors.response.use(
   }
 )
 
-/**
- * get方法，对应get请求
- * @param {String} url [请求的url地址]
- * @param {Object} params [请求时携带的参数]
- */
-const get = function get (url: string): any {
-  return new Promise((resolve, reject) => {
-    service.get(url)
-      .then((res: any) => {
+class HTTP {
+  /**
+   * get方法，对应get请求
+   * @param {String} url [请求的url地址]
+   * @param {Object} params [请求时携带的参数]
+   */
+  get (url: string): any {
+    return new Promise((resolve, reject) => {
+      service.get(url)
+        .then((res: any) => {
+          resolve(res.data)
+        }).catch((err: any) => {
+          reject(err)
+        })
+    })
+  }
+
+  /**
+   * post方法，对应post请求
+   * @param {String} url [请求的url地址]
+   * @param {Object} params [请求时携带的参数]
+   */
+  post (url: string, params: object): any {
+    return new Promise((resolve, reject) => {
+      service.post(url, params
+      ).then((res: any) => {
         resolve(res.data)
       }).catch((err: any) => {
         reject(err)
       })
-  })
-}
-
-/**
- * post方法，对应post请求
- * @param {String} url [请求的url地址]
- * @param {Object} params [请求时携带的参数]
- */
-const post = function post (url: string, params: object): any {
-  return new Promise((resolve, reject) => {
-    service.post(url, params
-    ).then((res: any) => {
-      resolve(res.data)
-    }).catch((err: any) => {
-      reject(err)
     })
-  })
+  }
 }
 
 export {
   service,
-  get,
-  post
+  HTTP
 }

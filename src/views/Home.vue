@@ -22,8 +22,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import { Action } from 'vuex-class'
 import bmPorcelainItem from '../components/bm-porcelainItem.vue'
 import bmSearchInput from '../components/bm-searchInput.vue'
-import { Porcelain, getPorcelainList } from '../datatype/porcelainType'
-import { loginVM, getToken } from '../request/api'
+import { Porcelain, PorcelainModel } from '../models/porcelainModel'
+import { loginVM, API } from '../request/api'
  @Component({
    components: {
      bmPorcelainItem,
@@ -51,15 +51,17 @@ loginVMParam: loginVM = {
 };
 
 mounted () {
+  const api = new API()
+  const porcelainModel = new PorcelainModel()
   // 获取token
-  getToken(this.loginVMParam).then((res: any) => {
+  api.getToken(this.loginVMParam).then((res: any) => {
     console.log('token:::', res)
     // 将token存入vuex
     const token = res.id_token
     this.setToken(token)
     localStorage.setItem('token', token)
     // 获取所有瓷器列表
-    return getPorcelainList()
+    return porcelainModel.getPorcelainList()
   })
     .then((res: any) => {
       console.log('porcelainList:::', res)
