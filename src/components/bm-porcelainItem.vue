@@ -3,24 +3,8 @@
     <el-card :body-style="{ padding: '10px' }">
       <el-row>
         <el-col :span="4">
-          <el-image
-            style="width: 140%;"
-            :src="dataItem.imageUrl"
-            :preview-src-list="[dataItem.imageUrl]"
-            lazy>
-            <div slot="placeholder" class="image-slot" style="color: #999">
-              加载中<span class="dot">...</span>
-            </div>
-          </el-image>
-          <el-image
-            style="width: 140%; height: 140%; margin-top: -40%; margin-left: 60%;"
-            :src="dataItem.featureUrl"
-            :preview-src-list="[dataItem.featureUrl]"
-            lazy>
-            <div slot="placeholder" class="image-slot" style="color: #999">
-              加载中<span class="dot">...</span>
-            </div>
-          </el-image>
+          <img v-lazy="dataItem.imageUrl" class="imageClass" alt="">
+          <img v-lazy="dataItem.featureUrl" class="featureClass" alt="">
         </el-col>
         <el-col :span="18">
           <div class="info-wrapper">
@@ -53,6 +37,17 @@ export default class PorcelainItem extends Vue {
 <style lang="less">
 .porcelainItem {
   margin-bottom: 2%;
+  .imageClass {
+    width:  120%;
+    height: 120%;
+    margin-top: 10%;
+    margin-left: 10%;
+  }
+  .featureClass {
+    width: 14rem;
+    height: 14rem;
+    margin-top: -10%;
+  }
   .info-wrapper {
     padding-left: 18%;
     .info-item {
