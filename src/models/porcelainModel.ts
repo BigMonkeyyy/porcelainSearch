@@ -30,8 +30,8 @@ class PorcelainModel extends API {
    * @memberof PorcelainModel
    */
   public getFirstPorcelainList = (sCallback: any) => {
-    this._getPorcelainList((res: any) => {
-      const data = firstPaging(res)
+    this._getPorcelainList((res: Array<Porcelain>) => {
+      const data: Array<Porcelain> = firstPaging(res) | []
       console.log('first5:::', data)
       this.loading = false // 请求成功，解除锁定
       sCallback(data)
@@ -43,8 +43,8 @@ class PorcelainModel extends API {
    * @memberof PorcelainModel
    */
   public getOtherPorcelainList = (sCallback: any, start: Number) => {
-    this._getPorcelainList((res: any) => {
-      const data = paging(res, start)
+    this._getPorcelainList((res: Array<Porcelain>) => {
+      const data: Array<Porcelain> = paging(res, start)
       console.log('each2:::', data)
       this.loading = false // 请求成功，解除锁定
       // if (data.length > 0) {

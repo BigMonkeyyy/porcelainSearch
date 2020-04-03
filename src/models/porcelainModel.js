@@ -11,7 +11,7 @@ class PorcelainModel extends API {
          */
         this.getFirstPorcelainList = (sCallback) => {
             this._getPorcelainList((res) => {
-                const data = firstPaging(res);
+                const data = firstPaging(res) | [];
                 console.log('first5:::', data);
                 this.loading = false; // 请求成功，解除锁定
                 sCallback(data);
